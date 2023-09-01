@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'OpenCFD-AMR'
+copyright = '2023, David Song'
+author = 'David Song'
 
 release = '0.1'
 version = '0.1.0'
