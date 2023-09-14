@@ -35,3 +35,13 @@ option(OPTION_SYCL   "Enable SyCL"   OFF)
 cp ../Exec/7_JET/inputs .
 mpirun -n 8 ./EBR.exe inputs
 ```
+
+## 可视化
+
+结果文件为`plt*`，可使用Paraview打开
+![step 1](./figs/step1.png)
+![step 2](./figs/step2.png)
+![step 3](./figs/step3.png)
+
+或 `pip install yt` 使用jupyter-notebook。
+![step 3](./figs/jupyter.png)
