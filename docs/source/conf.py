@@ -21,19 +21,22 @@ extensions = [
 ]
 
 myst_enable_extensions = [
-    "amsmath",
-    "attrs_inline",
-    "colon_fence",
+    # 用于解析美元$和$$封装的数学和LaTeX 数学公式解析
+    "dollarmath","amsmath",
+    # 定义列表
     "deflist",
-    "dollarmath",
-    "fieldlist",
+    # 冒号的代码围栏
+    "colon_fence",
+    # HTML 警告
     "html_admonition",
+    # HTML 图像
     "html_image",
-    "replacements",
-    "smartquotes",
-    "strikethrough",
+    # 智能引号与替换件
+    "smartquotes","replacements",
+    # 替换
     "substitution",
-    "tasklist",
+    # 任务列表
+    "tasklist"
 ]
 
 source_suffix = {

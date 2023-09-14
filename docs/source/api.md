@@ -360,20 +360,26 @@ AMReX (21.10-8-g64c9d92c0f46) finalized
 #### 标量输运
 
 使用
+
 $$
 \frac{\partial \phi}{\partial t}+ \nabla \cdot (\boldsymbol{u}^{spec}\phi)=0
 $$
+
 求解$\phi(x,y,t)$。其中速度场$\boldsymbol{u}^{spec} = (u,v)$是给定的无旋场。由下式给出
+
 $$
 \psi(i,j) = sin^2(\pi x)sin^2(\pi y)cos(\pi t/2)/\pi\\
 u = -\frac{\partial \psi}{\partial y};\quad v = \frac{\partial \psi}{\partial x}
 $$
+
 理论上来讲，速度场是周期性的无旋场，控制方程中也不包含粘性耗散项，因此经过一个周期后，$\phi$的分布应该与初始分布相同。由于数值误差和耗散的存在，实际不完全相同。
 
 采用离散
+
 $$
 \frac{\phi_{i, j}^{n+1}-\phi_{i, j}^{n}}{\Delta t}=\frac{(\phi u)_{i+1 / 2, j}^{n+1 / 2}-(\phi u)_{i-1 / 2, j}^{n+1 / 2}}{\Delta x}+\frac{(\phi v)_{i, j+1 / 2}^{n+1 / 2}-(\phi v)_{i, j-1 / 2}^{n+1 / 2}}{\Delta y}
 $$
+
 其中$\phi$定义在体心上，$\boldsymbol{u}$定义在面上，为了计算得到面通量，面上的$\phi$值通过Godunov格式得到。
 
 ![adv-phi](./figs/adv_phi.png)
@@ -388,9 +394,9 @@ $$
  phi                                  0.01563385663            0.007879356458
 ```
 
-### 4. 其他特性
+## 4. 其他特性
 
-#### 4.1 与pyTorch耦合的机器学习
+### 4.1 与pyTorch耦合的机器学习
 
 `AMReX` 和 `LibTorch `可以使用 `GCC `编译器在相同的环境中编译。数据在 `AMReX `中使用称为`multifab`的结构表示。为了在 `AMReX` 上调用预先训练好的机器学习模型，需要将数据从` multifab `转换为 Torch 张量。
 
