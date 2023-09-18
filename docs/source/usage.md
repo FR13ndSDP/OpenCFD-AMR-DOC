@@ -5,8 +5,7 @@
 git clone --recursive git@github.com:FR13ndSDP/OpenCFD-AMR.git
 cd OpenCFD-AMR
 
-cmake -B build; cd build
-make -j <N> # thread number
+cmake -B build; cmake --build build -j <N> # thread number
 ```
 
 ## 运行
@@ -34,6 +33,45 @@ option(OPTION_SYCL   "Enable SyCL"   OFF)
 ```bash
 cp ../Exec/7_JET/inputs .
 mpirun -n 8 ./EBR.exe inputs
+```
+
+## 海光DCU编译运行
+
+在东方超算系统上加载系统环境：
+```bash
+#alias loadenv="module purge; module load compiler/rocm/dtk/22.10.1 compiler/cmake/3.24.1 compiler/intel/2017.5.239 mpi/hpcx/2.7.4/intel-2017.5.239"
+loadenv
+```
+
+由于海光DTK未实现 `hipDeviceGetUuid`，应使用适配后的AMReX[分支](https://github.com/FR13ndSDP/amrex/tree/DCU)。
+
+```C++
+hipUUID uuid;
+AMREX_HIP_SAFE_CALL(hipDeviceGetUuid(&uuid, device_id));
+
+char const* sbuf = uuid.bytes;
+MPI_Allgather(sbuf, len, MPI_CHAR, pbuf, len, MPI_CHAR,
+                ParallelDescriptor::Communicator());
+std::map<std::string,int> uuid_counts;
+std::string my_uuid;
+for (int i = 0; i < ParallelDescriptor::NProcs(); ++i) {
+    std::string iuuid(pbuf+i*len, len);
+    if (i == ParallelDescriptor::MyProc()) {
+        my_uuid = iuuid;
+    }
+    ++uuid_counts[iuuid];
+}
+num_devices_used = uuid_counts.size();
+num_device_partners = uuid_counts[my_uuid];
+```
+这段代码将统计位于同一节点的GPU数量，用于分配全局内存，由于无法获取UUID，我们直接设定 `num_device_partners` 为 4 或 1。
+
+在`OpenCFD-AMR`根目录执行：
+```bash
+cmake -B build -DCMAKE_CXX_COMPILER=$(which hipcc)
+# 修正链接错误
+sed -i 's/\.\.//g' build/CMakeFiles/ebamr.dir/link.txt
+cmake --build build -j
 ```
 
 ## 可视化
