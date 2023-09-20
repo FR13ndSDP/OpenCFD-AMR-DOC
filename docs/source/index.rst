@@ -1,7 +1,7 @@
 Welcome to OpenCFD-AMR's documentation!
 ===================================================
 
-OpenCFD-AMR is a CFD solver written in C++.
+OpenCFD-AMR is a CFD solver written in C++. Check out the code `here <https://github.com/FR13ndSDP/OpenCFD-AMR>`_
 
 Features:
 
