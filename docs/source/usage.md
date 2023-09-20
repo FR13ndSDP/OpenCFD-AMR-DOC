@@ -37,13 +37,39 @@ mpirun -n 8 ./EBR.exe inputs
 
 ## 海光DCU编译运行
 
+### DTK 23.04.1
+在东方超算系统上加载系统环境：
+```bash
+#source /public/paratera_deploy/module.sh
+#alias loadenv="module purge; module load dtk/23.04.1 compiler/cmake/3.24.1 compiler/intel/2017.5.239 mpi/hpcx/2.7.4/intel-2017.5.239"
+loadenv
+```
+
+注意指定C++编译器为 `clang++`:
+```CMake
+# C++ Options
+if (OPTION_HIP)
+   set(CMAKE_CXX_COMPILER clang++) # or use hipcc for DTK <=23.04
+endif()
+```
+编译使用方式与普通GPU一致。
+
+### DTK < 23.04.1
 在东方超算系统上加载系统环境：
 ```bash
 #alias loadenv="module purge; module load compiler/rocm/dtk/22.10.1 compiler/cmake/3.24.1 compiler/intel/2017.5.239 mpi/hpcx/2.7.4/intel-2017.5.239"
 loadenv
 ```
 
-由于海光DTK未实现 `hipDeviceGetUuid`，应使用适配后的AMReX[分支](https://github.com/FR13ndSDP/amrex/tree/DCU)。
+注意指定C++编译器为 `hipcc`:
+```CMake
+# C++ Options
+if (OPTION_HIP)
+   set(CMAKE_CXX_COMPILER hipcc) # or use hipcc for DTK <=23.04
+endif()
+```
+
+由于海光DTK低版本未实现 `hipDeviceGetUuid`，应使用适配后的AMReX[分支](https://github.com/FR13ndSDP/amrex/tree/DCU)。
 
 ```C++
 hipUUID uuid;
