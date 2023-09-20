@@ -4,6 +4,7 @@ Welcome to OpenCFD-AMR's documentation!
 OpenCFD-AMR is a CFD solver written in C++.
 
 Features:
+
 + Adaptive mesh refinement
 + Immersed boundary
 + Chemically reacting flow
